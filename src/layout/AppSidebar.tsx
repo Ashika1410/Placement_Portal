@@ -28,10 +28,10 @@ const navItems: NavItem[] = [
     name: "Admin",
     path: "/admin-dashboard",
     subItems: [
-      { name: "Profile", path: "/profile", pro: false },
+      { name: "Profile", path: "/admin-profile", pro: false },
       { name: "Student", path: "/student-table", pro: false },
-      { name: "Staff", path: "/staffs", pro: false },
-      { name: "Company", path: "/Companies", pro: false },
+      { name: "Staff", path: "/staff-table", pro: false },
+      { name: "Company", path: "/company-table", pro: false },
       { name: "Jobs", path: "/jobs", pro: false },
       { name: "Report", path: "/report", pro: false },
     ],
@@ -41,8 +41,8 @@ const navItems: NavItem[] = [
     name: "Staffs",
     path: "/staff-dashboard",
     subItems: [
-      { name: "Profile", path: "/profile", pro: false },
-      { name: "Students", path: "/students", pro: false },
+      { name: "Profile", path: "/staff-profile", pro: false },
+      { name: "Students", path: "/student-table", pro: false },
       { name: "Jobs", path: "/jobs", pro: false },
     ],
   },
@@ -51,7 +51,7 @@ const navItems: NavItem[] = [
     icon: <ListIcon />,
     path: "/student-dashboard",
     subItems: [
-      { name: "Profile", path: "/profile", pro: false },
+      { name: "Profile", path: "/student-profile", pro: false },
       { name: "Certifications", path: "/certificate", pro: false },
       { name: "Projects", path: "/project", pro: false },
       { name: "Resumes", path: "/resume", pro: false },
@@ -64,10 +64,10 @@ const navItems: NavItem[] = [
     icon: <TableIcon />,
     path: "/company-dashboard",
     subItems: [
-      { name: "Profile", path: "/profile", pro: false },
+      { name: "Profile", path: "/company-profile", pro: false },
       { name: "Jobs", path: "/jobs", pro: false },
-      { name: "Application", path: "/application", pro: false },
-      { name: "Students", path: "/student", pro: false },
+      { name: "Application", path: "/company-apply", pro: false },
+      { name: "PostJobs", path: "/jobpost", pro: false },
     ],
   },
   {
@@ -323,15 +323,15 @@ const AppSidebar: React.FC = () => {
           {isExpanded || isHovered || isMobileOpen ? (
             <>
               <img
-                className="dark:hidden"
-                src="/src"
+                className="dark:hidden border-2 rounded-full"
+                src="public/images/logo/Engineeringlogo.jfif"
                 alt="Placement Cell"
                 width={150}
                 height={40}
               />
               <img
-                className="hidden dark:block"
-                src="/src"
+                className="hidden dark:block border-2 rounded-full"
+                src="public/images/logo/Engineeringlogo.jfif"
                 alt="Placement Cell"
                 width={150}
                 height={40}
@@ -339,7 +339,7 @@ const AppSidebar: React.FC = () => {
             </>
           ) : (
             <img
-              src="/src"
+              src="public/images/logo/Engineeringlogo.jfif"
               alt="Placement Cell"
               width={32}
               height={32}
@@ -391,3 +391,4 @@ const AppSidebar: React.FC = () => {
 };
 
 export default AppSidebar;
+

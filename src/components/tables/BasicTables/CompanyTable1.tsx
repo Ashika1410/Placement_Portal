@@ -6,7 +6,7 @@ import {
     TableRow,
 } from "../../ui/table";
 
-interface Order {
+interface Company {
     id: number;
     companyName: {
         image: string;
@@ -20,92 +20,71 @@ interface Order {
     networth: string;
 }
 
-// Define the table data using the interface
-const tableData: Order[] = [
+const tableData: Company[] = [
     {
         id: 1,
         companyName: {
-            image: "/images/user/user-17.jpg",
-            name: "Lindsey Curtis",
+            image: "/images/company/google.png",
+            name: "Google LLC",
         },
-        url: "Agency Website",
+        url: "https://careers.google.com",
         position: {
-            name: [
-                "/images/user/user-22.jpg",
-                "/images/user/user-23.jpg",
-                "/images/user/user-24.jpg",
-            ],
+            name: ["Frontend Developer", "Backend Engineer", "Cloud Architect"],
         },
-        vaccency: 4,
-        networth: "Active",
+        vaccency: 12,
+        networth: "$1.7T",
     },
     {
         id: 2,
         companyName: {
-            image: "/images/user/user-17.jpg",
-            name: "Lindsey Curtis",
+            image: "/images/company/microsoft.png",
+            name: "Microsoft",
         },
-        url: "Agency Website",
+        url: "https://careers.microsoft.com",
         position: {
-            name: [
-                "/images/user/user-22.jpg",
-                "/images/user/user-23.jpg",
-                "/images/user/user-24.jpg",
-            ],
+            name: ["Software Engineer", "Data Scientist"],
         },
-        vaccency: 4,
-        networth: "Active",
+        vaccency: 8,
+        networth: "$2.5T",
     },
     {
         id: 3,
         companyName: {
-            image: "/images/user/user-17.jpg",
-            name: "Lindsey Curtis",
+            image: "/images/company/amazon.png",
+            name: "Amazon",
         },
-        url: "Agency Website",
+        url: "https://www.amazon.jobs",
         position: {
-            name: [
-                "/images/user/user-22.jpg",
-                "/images/user/user-23.jpg",
-                "/images/user/user-24.jpg",
-            ],
+            name: ["DevOps Engineer"],
         },
-        vaccency: 4,
-        networth: "Active",
+        vaccency: 5,
+        networth: "$1.8T",
     },
     {
         id: 4,
         companyName: {
-            image: "/images/user/user-17.jpg",
-            name: "Lindsey Curtis",
+            image: "/images/company/meta.png",
+            name: "Meta Platforms",
         },
-        url: "Agency Website",
+        url: "https://www.metacareers.com",
         position: {
-            name: [
-                "/images/user/user-22.jpg",
-                "/images/user/user-23.jpg",
-                "/images/user/user-24.jpg",
-            ],
+            name: ["AI Researcher", "UX Designer"],
         },
-        vaccency: 4,
-        networth: "Active",
+        vaccency: 6,
+        networth: "$900B",
     },
     {
         id: 5,
         companyName: {
-            image: "/images/user/user-17.jpg",
-            name: "Lindsey Curtis",
+            image: "/images/company/infosys.png",
+            name: "Infosys",
         },
-        url: "Agency Website",
+        url: "https://www.infosys.com/careers",
         position: {
-            name: [
-                "/images/user/user-22.jpg",
-                "/images/user/user-23.jpg",
-                "/images/user/user-24.jpg",
-            ],
+            name: ["Full Stack Developer", "Business Analyst", "QA Tester"],
         },
-        vaccency: 4,
-        networth: "Active",
+        vaccency: 15,
+        networth: "$85B",
     },
 ];
 
@@ -114,89 +93,58 @@ export default function CompanyTable() {
         <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
             <div className="max-w-full overflow-x-auto">
                 <Table>
-                    {/* Table Header */}
                     <TableHeader className="border-b border-gray-100 dark:border-white/[0.05]">
                         <TableRow>
-                            <TableCell
-                                isHeader
-                                className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
-                            >
+                            <TableCell isHeader className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400">
                                 Company Name
                             </TableCell>
-                            <TableCell
-                                isHeader
-                                className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
-                            >
+                            <TableCell isHeader className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400">
                                 Website URL
                             </TableCell>
-                            <TableCell
-                                isHeader
-                                className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
-                            >
-                                Position
+                            <TableCell isHeader className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400">
+                                Positions
                             </TableCell>
-                            <TableCell
-                                isHeader
-                                className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
-                            >
-                                Vaccency
+                            <TableCell isHeader className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400">
+                                Vacancy
                             </TableCell>
-                            <TableCell
-                                isHeader
-                                className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
-                            >
+                            <TableCell isHeader className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400">
                                 Net Worth
                             </TableCell>
                         </TableRow>
                     </TableHeader>
-
-                    {/* Table Body */}
                     <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
-                        {tableData.map((order) => (
-                            <TableRow key={order.id}>
+                        {tableData.map((company) => (
+                            <TableRow key={company.id}>
                                 <TableCell className="px-5 py-4 sm:px-6 text-start">
                                     <div className="flex items-center gap-3">
                                         <div className="w-10 h-10 overflow-hidden rounded-full">
                                             <img
                                                 width={40}
                                                 height={40}
-                                                src={order.companyName.image}
-                                                alt={order.companyName.name}
+                                                src={company.companyName.image}
+                                                alt={company.companyName.name}
                                             />
                                         </div>
                                         <div>
                                             <span className="block font-medium text-gray-800 text-theme-sm dark:text-white/90">
-                                                {order.companyName.name}
+                                                {company.companyName.name}
                                             </span>
                                         </div>
                                     </div>
                                 </TableCell>
                                 <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                    {order.url}
+                                    <a href={company.url} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline dark:text-blue-400">
+                                        {company.url}
+                                    </a>
                                 </TableCell>
                                 <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                    <div className="flex -space-x-2">
-                                        {order.position.name.map((teamImage, index) => (
-                                            <div
-                                                key={index}
-                                                className="w-6 h-6 overflow-hidden border-2 border-white rounded-full dark:border-gray-900"
-                                            >
-                                                <img
-                                                    width={24}
-                                                    height={24}
-                                                    src={teamImage}
-                                                    alt={`Team member ${index + 1}`}
-                                                    className="w-full size-6"
-                                                />
-                                            </div>
-                                        ))}
-                                    </div>
+                                    {company.position.name.join(", ")}
                                 </TableCell>
                                 <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                {order.vaccency}
+                                    {company.vaccency}
                                 </TableCell>
                                 <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
-                                    {order.networth}
+                                    {company.networth}
                                 </TableCell>
                             </TableRow>
                         ))}
