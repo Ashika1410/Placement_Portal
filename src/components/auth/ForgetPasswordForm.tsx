@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import Input from "../form/input/InputField";
 import Label from "../form/Label";
 
@@ -8,7 +8,7 @@ export default function ForgetPasswordForm() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle the password reset logic here (e.g., call API)
+    // Handle password reset logic here
     console.log("Reset email sent to:", email);
   };
 
@@ -33,16 +33,8 @@ export default function ForgetPasswordForm() {
 
         <form onSubmit={handleSubmit} className="mt-6 space-y-5">
           <div>
-            <Label>Email address</Label>
-            <Input
-              type="email"
-              name="email"
-              id="email"
-              placeholder="Enter your email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
+            <Label htmlFor="email">Email address</Label>
+           <Input />
           </div>
 
           <button
@@ -66,3 +58,4 @@ export default function ForgetPasswordForm() {
     </div>
   );
 }
+
