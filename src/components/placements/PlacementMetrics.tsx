@@ -1,7 +1,7 @@
 import {
   BoxIconLine,
   GroupIcon,
-} from "../../../public/images/icons/icons";
+} from "../../../public/images/icons";
 
 export default function PlacementMetrics() {
   return (

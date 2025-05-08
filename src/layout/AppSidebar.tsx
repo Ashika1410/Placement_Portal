@@ -12,7 +12,7 @@ import {
   PlugInIcon,
   TableIcon,
   UserCircleIcon,
-} from "../../public/images/icons/icons";
+} from "../../public/images/icons";
 import { useSidebar } from "../context/SidebarContext";
 
 type NavItem = { 
