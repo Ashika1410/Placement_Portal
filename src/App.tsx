@@ -2,15 +2,11 @@ import { BrowserRouter as Router, Routes, Route } from "react-router";
 import SignIn from "./pages/AuthPages/SignIn";
 import SignUp from "./pages/AuthPages/SignUp";
 import NotFound from "./pages/OtherPage/NotFound";
-import UserProfiles from "./pages/ProfilePages/UserProfiles"; 
+import UserProfiles from "./pages/ProfilePages/UserProfiles";
 import AppLayout from "./layout/AppLayout";
 import { ScrollToTop } from "./components/common/ScrollToTop";
 import Home from "./pages/Dashboard/Home";
 import StudentTable from "./components/tables/BasicTables/StudentTable1";
-// import Admin from "./pages/Dashboard/AdminDashboard";
-// import Staff from "./pages/Dashboard/StaffDashboard";
-// import Student from "./pages/Dashboard/StudentDashboard";
-// import Company from "./pages/Dashboard/CompanyDashboard";
 import CompanyTable from "./components/tables/BasicTables/CompanyTable1";
 import StaffTable from "./components/tables/BasicTables/StaffTable1";
 import AdminProfile from "./components/ProfileLayouts/AdminProfile";
@@ -25,6 +21,7 @@ import StudentCertifications from "./pages/OtherPage/StudentCertifications";
 import CompanyApplications from "./pages/OtherPage/CompanyApplications";
 import CompanyJobPost from "./pages/OtherPage/CompanyJobPost";
 import CompanyProfile from "./components/ProfileLayouts/CompanyProfile";
+import ForgetPasswordForm from "./components/auth/ForgetPasswordForm";
 
 export default function App() {
   return (
@@ -35,17 +32,13 @@ export default function App() {
           {/* Dashboard Layout */}
           <Route element={<AppLayout />}>
             <Route index path="/" element={<Home />} />
-            {/* <Route path="/" element={<Admin />} /> */}
-            {/* <Route path="/staff-dashboard" element={<Staff />} />
-            <Route path="/student-dashboard" element={<Student />} />
-            <Route path="/company-dashboard" element={<Company />} /> */}
 
             {/* Others Page */}
             <Route path="/profile" element={<UserProfiles />} />
             <Route path="/admin-profile" element={<AdminProfile />} />
             <Route path="/staff-profile" element={<StaffProfile />} />
             <Route path="/student-profile" element={<StudentProfile />} />
-            <Route path="/company-profile" element={<CompanyProfile /> } />
+            <Route path="/company-profile" element={<CompanyProfile />} />
             <Route path="/jobs" element={<JobDescriptionPage />} />
             <Route path="/report" element={<ReportPage />} />
             <Route path="/project" element={<StudentProjects />} />
@@ -54,7 +47,6 @@ export default function App() {
             <Route path="/certificate" element={<StudentCertifications />} />
             <Route path="/jobpost" element={<CompanyJobPost />} />
             <Route path="/company-apply" element={<CompanyApplications />} />
-            {/* <Route path="" element={} /> */}
 
             {/* Tables */}
             <Route path="/staff-table" element={<StaffTable />} />
@@ -66,6 +58,7 @@ export default function App() {
           {/* Auth Layout */}
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/reset-password" element={<ForgetPasswordForm /> } />
 
           {/* Fallback Route */}
           <Route path="*" element={<NotFound />} />

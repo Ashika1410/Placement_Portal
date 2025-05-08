@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import JobsPosted from "../company/JobsPosted";
 import Applications from "../company/Applications";
 import EditCompanyProfile from "../company/EditCompanyProfile";
