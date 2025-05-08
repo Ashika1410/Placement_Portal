@@ -6,13 +6,13 @@ import {
   BoxCubeIcon,
   ChevronDownIcon,
   GridIcon,
-  HorizontaLDots,
+  HorizontalDotsIcon,
   ListIcon,
   PieChartIcon,
   PlugInIcon,
   TableIcon,
   UserCircleIcon,
-} from "../../public/images/icons";
+} from "../assets/icons";
 import { useSidebar } from "../context/SidebarContext";
 
 type NavItem = { 
@@ -361,7 +361,7 @@ const AppSidebar: React.FC = () => {
                 {isExpanded || isHovered || isMobileOpen ? (
                   "Menu"
                 ) : (
-                  <HorizontaLDots className="size-6" />
+                  <HorizontalDotsIcon className="size-6" />
                 )}
               </h2>
               {renderMenuItems(navItems, "main")}
