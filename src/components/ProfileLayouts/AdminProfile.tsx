@@ -1,7 +1,6 @@
 import AdminMetaCard from "../AdminProfile/AdminMetaCard";
 import AdminInfoCard from "../AdminProfile/AdminInfoCard";
 import AdminPrivilegesCard from "../AdminProfile/AdminPrivilegesCard";
-// import AdminActivityCard from "../AdminProfile/AdminActivityCard";
 
 export default function AdminProfile() {
   return (
@@ -12,8 +11,7 @@ export default function AdminProfile() {
       <div className="space-y-6">
         <AdminMetaCard />
         <AdminInfoCard />
-        <AdminPrivilegesCard /> {/* Roles, permissions, etc. */}
-        {/* <AdminActivityCard /> Recent logins, activity, etc. */}
+        <AdminPrivilegesCard /> 
       </div>
     </div>
   );
