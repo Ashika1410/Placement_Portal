@@ -1,7 +1,7 @@
 import StudentMetaCard from "../StudentProfile/StudentMetaCard";
 import StudentInfoCard from "../StudentProfile/StudentInfoCard";
 import StudentAcademicCard from "../StudentProfile/StudentAcademicCard";
-import StudentAddressCard from "../StudentProfile/StudentAddressCard";
+import StudentAddressCard from "../StudentProfile/studentAddressCard";
 
 export default function StudentProfile() {
   return (
