@@ -324,7 +324,7 @@ const AppSidebar: React.FC = () => {
             <>
               <img
                 className="dark:hidden border-2 rounded-full"
-                src="public/images/logo/Engineeringlogo.jfif"
+                src="../images/logo/Engineeringlogo.jfif"
                 alt="Placement Cell"
                 width={150}
                 height={40}
