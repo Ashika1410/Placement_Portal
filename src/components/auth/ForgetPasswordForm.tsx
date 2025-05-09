@@ -1,15 +1,15 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import Input from "../form/input/InputField";
 import Label from "../form/Label";
 
 export default function ForgetPasswordForm() {
-  const [email, setEmail] = useState("");
+  // const [email, setEmail] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Handle password reset logic here
-    console.log("Reset email sent to:", email);
+    // console.log("Reset email sent to:", email);
   };
 
   return (

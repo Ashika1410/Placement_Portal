@@ -1,7 +1,7 @@
 import StudentMetaCard from "../StudentProfile/StudentMetaCard";
 import StudentInfoCard from "../StudentProfile/StudentInfoCard";
 import StudentAcademicCard from "../StudentProfile/StudentAcademicCard";
-import StudentAddressCard from "../StudentProfile/studentAddressCard";
+import StudentAddressCard from "../StudentProfile/StudentAddressCard";
 
 export default function StudentProfile() {
   return (
@@ -12,7 +12,7 @@ export default function StudentProfile() {
       <div className="space-y-6">
         <StudentMetaCard />
         <StudentInfoCard />
-        <StudentAcademicCard /> {/* Course, Semester, Roll Number */}
+        <StudentAcademicCard />
         <StudentAddressCard />
       </div>
     </div>
