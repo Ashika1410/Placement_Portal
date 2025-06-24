@@ -1,40 +1,51 @@
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+
 interface JobDetails {
+  id?: number;
   title: string;
   company: string;
-  department: string;
+  department?: string;
   location: string;
-  stipend: string;
-  eligibility: string;
-  lastDate: string;
+  stipend?: string;
+  eligibility?: string;
+  lastDate?: string;
   description: string;
   responsibilities: string[];
   requirements: string[];
+  postedDate?: string;
 }
 
-const job: JobDetails = {
-  title: "Software Engineer Intern",
-  company: "Infosys",
-  department: "Engineering",
-  location: "Bangalore, India",
-  stipend: "₹25,000 / month",
-  eligibility: "Final Year B.Tech (CSE, IT, ECE) with CGPA > 7.0",
-  lastDate: "15 June 2025",
-  description:
-    "Join Infosys as a Software Engineering Intern for a 6-month internship program, where you will work on real-time projects and learn modern development practices.",
-  responsibilities: [
-    "Build scalable software solutions under mentorship.",
-    "Collaborate with product and design teams.",
-    "Contribute to documentation and testing.",
-  ],
-  requirements: [
-    "Strong knowledge of JavaScript/React.",
-    "Good understanding of DSA and problem-solving.",
-    "Basic knowledge of Git and GitHub.",
-    "Excellent communication skills.",
-  ],
-};
-
 export default function JobDescriptionPage() {
+  const { id } = useParams();
+  const [job, setJob] = useState<JobDetails | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchJob() {
+      try {
+        const res = await fetch(`http://localhost:3000/jobs/${id}`);
+        if (!res.ok) throw new Error("Failed to fetch job");
+        const data = await res.json();
+        setJob(data);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    if (id) fetchJob();
+  }, [id]);
+
+  if (loading) {
+    return <div className="text-center py-10 text-gray-600">Loading...</div>;
+  }
+
+  if (!job) {
+    return <div className="text-center py-10 text-red-600">Job not found</div>;
+  }
+
   return (
     <div className="max-w-5xl mx-auto px-4 py-10">
       <div className="bg-white dark:bg-gray-900 rounded-xl shadow p-6 space-y-6">
@@ -48,18 +59,26 @@ export default function JobDescriptionPage() {
         </div>
 
         <div className="space-y-2">
-          <p className="text-sm text-gray-600 dark:text-gray-300">
-            <strong>Department:</strong> {job.department}
-          </p>
-          <p className="text-sm text-gray-600 dark:text-gray-300">
-            <strong>Stipend:</strong> {job.stipend}
-          </p>
-          <p className="text-sm text-gray-600 dark:text-gray-300">
-            <strong>Eligibility:</strong> {job.eligibility}
-          </p>
-          <p className="text-sm text-gray-600 dark:text-gray-300">
-            <strong>Last Date to Apply:</strong> {job.lastDate}
-          </p>
+          {job.department && (
+            <p className="text-sm text-gray-600 dark:text-gray-300">
+              <strong>Department:</strong> {job.department}
+            </p>
+          )}
+          {job.stipend && (
+            <p className="text-sm text-gray-600 dark:text-gray-300">
+              <strong>Salary/Stipend:</strong> {job.stipend}
+            </p>
+          )}
+          {job.eligibility && (
+            <p className="text-sm text-gray-600 dark:text-gray-300">
+              <strong>Eligibility:</strong> {job.eligibility}
+            </p>
+          )}
+          {job.lastDate && (
+            <p className="text-sm text-gray-600 dark:text-gray-300">
+              <strong>Last Date to Apply:</strong> {job.lastDate}
+            </p>
+          )}
         </div>
 
         <div className="space-y-4">
@@ -69,27 +88,31 @@ export default function JobDescriptionPage() {
           <p className="text-gray-700 dark:text-gray-300">{job.description}</p>
         </div>
 
-        <div className="space-y-2">
-          <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
-            Responsibilities
-          </h2>
-          <ul className="list-disc pl-6 text-gray-700 dark:text-gray-300 space-y-1">
-            {job.responsibilities.map((item, i) => (
-              <li key={i}>{item}</li>
-            ))}
-          </ul>
-        </div>
+        {job.responsibilities?.length > 0 && (
+          <div className="space-y-2">
+            <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
+              Responsibilities
+            </h2>
+            <ul className="list-disc pl-6 text-gray-700 dark:text-gray-300 space-y-1">
+              {job.responsibilities.map((item, i) => (
+                <li key={i}>{item}</li>
+              ))}
+            </ul>
+          </div>
+        )}
 
-        <div className="space-y-2">
-          <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
-            Requirements
-          </h2>
-          <ul className="list-disc pl-6 text-gray-700 dark:text-gray-300 space-y-1">
-            {job.requirements.map((item, i) => (
-              <li key={i}>{item}</li>
-            ))}
-          </ul>
-        </div>
+        {job.requirements?.length > 0 && (
+          <div className="space-y-2">
+            <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
+              Requirements
+            </h2>
+            <ul className="list-disc pl-6 text-gray-700 dark:text-gray-300 space-y-1">
+              {job.requirements.map((item, i) => (
+                <li key={i}>{item}</li>
+              ))}
+            </ul>
+          </div>
+        )}
 
         <div className="pt-6">
           <button className="px-6 py-2 bg-blue-600 text-white font-medium rounded hover:bg-blue-700 transition">

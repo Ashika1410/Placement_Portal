@@ -1,12 +1,12 @@
 import type React from "react";
 import { useEffect, useRef } from "react";
 
-interface DropdownProps {
+type DropdownProps = {
+  className?: string;
   isOpen: boolean;
   onClose: () => void;
   children: React.ReactNode;
-  className?: string;
-}
+};
 
 export const Dropdown: React.FC<DropdownProps> = ({
   isOpen,

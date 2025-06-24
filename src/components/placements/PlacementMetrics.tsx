@@ -18,7 +18,7 @@ export default function PlacementMetrics() {
               Staffs
             </span>
             <h4 className="mt-2 font-bold text-gray-800 text-title-sm dark:text-white/90">
-              3,782
+              250
             </h4>
           </div>
         </div>
@@ -36,7 +36,7 @@ export default function PlacementMetrics() {
               Students
             </span>
             <h4 className="mt-2 font-bold text-gray-800 text-title-sm dark:text-white/90">
-              5,359
+              1024
             </h4>
           </div>
         </div>
@@ -54,7 +54,7 @@ export default function PlacementMetrics() {
               Companies
             </span>
             <h4 className="mt-2 font-bold text-gray-800 text-title-sm dark:text-white/90">
-              5,359
+              52
             </h4>
           </div>
         </div>
@@ -72,7 +72,7 @@ export default function PlacementMetrics() {
               Placed Students
             </span>
             <h4 className="mt-2 font-bold text-gray-800 text-title-sm dark:text-white/90">
-              5,359
+              34
             </h4>
           </div>
         </div>
