@@ -1,66 +1,81 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+// import { createContext, useContext, useEffect, useState, ReactNode } from "react";
 
-type User = {
-  id: string;
-  name: string;
-  role: "admin" | "staff" | "student" | "company"; // extend as needed
-  email: string;
-};
+// type UserData = {
+//   id: number;
+//   name: string;
+//   email: string;
+//   role: string;
+//   image?: string;
+// };
 
-type AuthContextType = {
-  user: User | null;
-  token: string | null;
-  login: (userData: User, token: string) => void;
-  logout: () => void;
-  isAuthenticated: boolean;
-};
+// export type AuthContextType = {
+//   user: UserData | null;
+//   token: string | null;
+//   login: (user: UserData, token: string) => void;
+//   logout: () => void;
+//   isAuthenticated: boolean;
+// };
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+// const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [token, setToken] = useState<string | null>(null);
+// export const AuthProvider = ({ children }: { children: ReactNode }) => {
+//   const [user, setUser] = useState<UserData | null>(null);
+//   const [token, setToken] = useState<string | null>(null);
 
-  // Load user from localStorage on mount
-  useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    const storedToken = localStorage.getItem("token");
+//   useEffect(() => {
+//     try {
+//       const storedUser = localStorage.getItem("user");
+//       const storedToken = localStorage.getItem("token");
 
-    if (storedUser && storedToken) {
-      setUser(JSON.parse(storedUser));
-      setToken(storedToken);
-    }
-  }, []);
+//       if (storedUser) {
+//         setUser(JSON.parse(storedUser));
+//       }
+//       if (storedToken) {
+//         setToken(storedToken);
+//       }
+//     // eslint-disable-next-line @typescript-eslint/no-unused-vars
+//     } catch (error) {
+//       console.warn("Corrupted localStorage data. Clearing...");
+//       localStorage.removeItem("user");
+//       localStorage.removeItem("token");
+//     }
+//   }, []);
 
-  const login = (userData: User, token: string) => {
-    setUser(userData);
-    setToken(token);
-    localStorage.setItem("user", JSON.stringify(userData));
-    localStorage.setItem("token", token);
-  };
+//   const login = (userData: UserData, authToken: string) => {
+//     setUser(userData);
+//     setToken(authToken);
+//     localStorage.setItem("user", JSON.stringify(userData));
+//     localStorage.setItem("token", authToken);
+//   };
 
-  const logout = () => {
-    setUser(null);
-    setToken(null);
-    localStorage.removeItem("user");
-    localStorage.removeItem("token");
-  };
+//   const logout = () => {
+//     setUser(null);
+//     setToken(null);
+//     localStorage.removeItem("user");
+//     localStorage.removeItem("token");
+//   };
 
-  const value = {
-    user,
-    token,
-    login,
-    logout,
-    isAuthenticated: !!user && !!token,
-  };
+//   return (
+//     <AuthContext.Provider
+//       value={{
+//         user,
+//         token,
+//         login,
+//         logout,
+//         isAuthenticated: !!user && !!token,
+//       }}
+//     >
+//       {children}
+//     </AuthContext.Provider>
+//   );
+// };
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-};
+// // eslint-disable-next-line react-refresh/only-export-components
+// export const useAuth = (): AuthContextType => {
+//   const context = useContext(AuthContext);
+//   if (!context) {
+//     throw new Error("useAuth must be used within an AuthProvider");
+//   }
+//   return context;
+// };
 
-export const useAuth = (): AuthContextType => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error("useAuth must be used within an AuthProvider");
-  }
-  return context;
-};

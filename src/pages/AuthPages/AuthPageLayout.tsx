@@ -11,7 +11,7 @@ export default function AuthLayout({
       {/* Left - College Image */}
       <div className="relative w-full lg:w-1/2 h-64 lg:h-auto overflow-hidden hidden lg:block">
         <img
-          src="../images/cards/Clg-Img.png" // Replace with your actual image path
+          src="../images/logo/Clglogo.jpg" 
           alt="College Campus"
           className="object-cover rounded-md w-full h-full"
         />
