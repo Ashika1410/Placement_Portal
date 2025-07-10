@@ -11,8 +11,8 @@ interface EditStaffModalProps {
     name: string;
     email: string;
     phone: string;
-    department: string;
-    designation: string;
+    department?: string;
+    designation?: string;
   };
   onClose: () => void;
   onSuccess: () => void;

@@ -40,18 +40,6 @@ const CompanyListPage: React.FC = () => {
       console.error('Error deleting company', err);
     }
   };
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const handleEdit = async (updatedCompany: Company) => {
-    try {
-      const { id, ...data } = updatedCompany;
-      console.log("Updating company with ID:", updatedCompany.id);
-      await axios.patch(`http://localhost:3000/company/${id}`, data);
-      fetchCompanies();
-    } catch (error) {
-      console.error('Error updating company:', error);
-    }
-  };
-
 
   useEffect(() => {
     fetchCompanies();

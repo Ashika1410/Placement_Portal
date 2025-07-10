@@ -16,7 +16,7 @@ interface NavItem {
   new?: boolean;
 }
 interface UserSidebarProps {
-  role: "admin" | "student" | "staff" | "company";
+  role: "ADMIN" | "STUDENT" | "STAFF" | "COMPANY" | string;
 }
 
 const roleBasedMenus: Record<"ADMIN" | "STAFF" | "STUDENT" | "COMPANY", NavItem[]> = {
@@ -86,6 +86,7 @@ const AppSidebar: React.FC = () => {
   const location = useLocation();
   const reduxUser = useSelector((state: RootState) => state.auth.user);
   const id = reduxUser?.id || localStorage.getItem("userId");
+  console.log(id);
   const role = reduxUser?.role || localStorage.getItem("role");
   const isSuperUser = role === "ADMIN";
   const navigate = useNavigate();
