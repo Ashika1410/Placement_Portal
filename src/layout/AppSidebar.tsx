@@ -7,19 +7,22 @@ import { useSelector } from "react-redux";
 import { RootState } from "../reduxStore/store";
 import axios from "axios";
 
+type Role = "ADMIN" | "STUDENT" | "STAFF" | "COMPANY";
+
 interface NavItem {
   name: string;
   path?: string;
   icon?: React.ReactNode;
-  subItems?: NavItem[];
+  subItems?: { name: string; icon: React.ReactNode; path: string; new?:boolean; pro?:boolean }[];
   pro?: boolean;
   new?: boolean;
 }
+
 interface UserSidebarProps {
-  role: "admin" | "student" | "staff" | "company";
+  role: Role;
 }
 
-const roleBasedMenus: Record<"ADMIN" | "STAFF" | "STUDENT" | "COMPANY", NavItem[]> = {
+const roleBasedMenus: Record<Role, NavItem[]> = {
   ADMIN: [
     {
       icon: <User />,
@@ -86,6 +89,7 @@ const AppSidebar: React.FC = () => {
   const location = useLocation();
   const reduxUser = useSelector((state: RootState) => state.auth.user);
   const id = reduxUser?.id || localStorage.getItem("userId");
+  console.log(id);
   const role = reduxUser?.role || localStorage.getItem("role");
   const isSuperUser = role === "ADMIN";
   const navigate = useNavigate();
@@ -99,7 +103,7 @@ const AppSidebar: React.FC = () => {
     [location.pathname]
   );
 
- useEffect(() => {
+  useEffect(() => {
     const fetchAndSetUser = async () => {
       const userId = reduxUser?.id;
 
@@ -122,11 +126,16 @@ const AppSidebar: React.FC = () => {
 
   useEffect(() => {
     if (!user?.role) return;
-    let matched = false;
-    const menus = isSuperUser ? Object.values(roleBasedMenus).flat() : roleBasedMenus[user.role] || [user.role];
 
-    menus.forEach((item: { subItems: { path: string; }[]; }, index: any) => {
-      item.subItems?.forEach((subItem: { path: string; }) => {
+    let matched = false;
+
+    const role = user.role as keyof typeof roleBasedMenus;
+    const menus = isSuperUser
+      ? Object.values(roleBasedMenus).flat()
+      : roleBasedMenus[role] || [];
+
+    menus.forEach((item, index) => {
+      item.subItems?.forEach((subItem) => {
         if (subItem.path && isActive(subItem.path)) {
           setOpenSubmenu({ type: "main", index });
           matched = true;
@@ -136,6 +145,7 @@ const AppSidebar: React.FC = () => {
 
     if (!matched) setOpenSubmenu(null);
   }, [location.pathname, isActive, isSuperUser, user?.role]);
+
 
   useEffect(() => {
     if (openSubmenu !== null) {
@@ -285,65 +295,65 @@ const AppSidebar: React.FC = () => {
   }, [isSuperUser, user?.role]);
 
   return (
-    <div className="bg-no-repeat bg-cover bg-center" style={{backgroundImage: `url(https://i.pinimg.com/736x/6d/fc/b8/6dfcb86a420b4c489a87c8a7d80faca9.jpg)`}}>
-    <aside
-      className={`fixed mt-16 flex flex-col lg:mt-0 top-0 px-5 left-0 dark:bg-gray-100 dark:border-gray-800 text-gray-900 h-screen transition-all duration-300 ease-in-out z-50 border-r border-gray-200 
+    <div className="bg-no-repeat bg-cover bg-center" style={{ backgroundImage: `url(https://i.pinimg.com/736x/6d/fc/b8/6dfcb86a420b4c489a87c8a7d80faca9.jpg)` }}>
+      <aside
+        className={`fixed mt-16 flex flex-col lg:mt-0 top-0 px-5 left-0 dark:bg-gray-100 dark:border-gray-800 text-gray-900 h-screen transition-all duration-300 ease-in-out z-50 border-r border-gray-200 
       ${isExpanded || isMobileOpen ? "w-[290px]" : isHovered ? "w-[290px]" : "w-[90px]"}
       ${isMobileOpen ? "translate-x-0" : "-translate-x-full"}
       lg:translate-x-0`}
-      onMouseEnter={() => !isExpanded && setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      <div className={`py-8 flex ${!isExpanded && !isHovered ? "lg:justify-center" : "justify-start"}`}>
-        <Link to="/">
-          {isExpanded || isHovered || isMobileOpen ? (
-            <>
+        onMouseEnter={() => !isExpanded && setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        <div className={`py-8 flex ${!isExpanded && !isHovered ? "lg:justify-center" : "justify-start"}`}>
+          <Link to="/">
+            {isExpanded || isHovered || isMobileOpen ? (
+              <>
+                <img
+                  className="dark:hidden border-2 rounded-full"
+                  src="../images/logo/Engineeringlogo.jfif"
+                  alt="Placement Cell"
+                  width={150}
+                  height={40}
+                />
+                <img
+                  className="hidden dark:block border-2 rounded-full"
+                  src="../images/logo/Engineeringlogo.jfif"
+                  alt="Placement Cell"
+                  width={150}
+                  height={40}
+                />
+              </>
+            ) : (
               <img
-                className="dark:hidden border-2 rounded-full"
                 src="../images/logo/Engineeringlogo.jfif"
                 alt="Placement Cell"
-                width={150}
-                height={40}
+                width={32}
+                height={32}
               />
-              <img
-                className="hidden dark:block border-2 rounded-full"
-                src="../images/logo/Engineeringlogo.jfif"
-                alt="Placement Cell"
-                width={150}
-                height={40}
-              />
-            </>
-          ) : (
-            <img
-              src="../images/logo/Engineeringlogo.jfif"
-              alt="Placement Cell"
-              width={32}
-              height={32}
-            />
-          )}
-        </Link>
-      </div>
+            )}
+          </Link>
+        </div>
 
-      <div className="flex flex-col overflow-y-auto duration-300 ease-linear no-scrollbar">
-        <nav className="mb-6">
-          <div className="flex flex-col gap-4">
-            <div>
-              <h2
-                className={`mb-4 text-xs uppercase flex leading-[20px] text-gray-400 ${!isExpanded && !isHovered ? "lg:justify-center" : "justify-start"
-                  }`}
-              >
-                {isExpanded || isHovered || isMobileOpen ? (
-                  "Menu"
-                ) : (
-                  <HorizontalDotsIcon className="size-6" />
-                )}
-              </h2>
-              {renderMenuItems(menusToRender, "main")}
+        <div className="flex flex-col overflow-y-auto duration-300 ease-linear no-scrollbar">
+          <nav className="mb-6">
+            <div className="flex flex-col gap-4">
+              <div>
+                <h2
+                  className={`mb-4 text-xs uppercase flex leading-[20px] text-gray-400 ${!isExpanded && !isHovered ? "lg:justify-center" : "justify-start"
+                    }`}
+                >
+                  {isExpanded || isHovered || isMobileOpen ? (
+                    "Menu"
+                  ) : (
+                    <HorizontalDotsIcon className="size-6" />
+                  )}
+                </h2>
+                {renderMenuItems(menusToRender, "main")}
+              </div>
             </div>
-          </div>
-        </nav>
-      </div>
-    </aside>
+          </nav>
+        </div>
+      </aside>
     </div>
   );
 };

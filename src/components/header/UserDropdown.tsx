@@ -12,6 +12,7 @@ import { Dropdown } from "../ui/dropdown/Dropdown";
 export default function UserDropdown() {
   const [isOpen, setIsOpen] = useState(false);
   const [formData, setFormData] = useState<{ avatarUrl?: string } | null>(null);
+  console.log(formData);
   const [error, setError] = useState<string | null>(null);
 
   const navigate = useNavigate();
@@ -21,7 +22,6 @@ export default function UserDropdown() {
   const toggleDropdown = () => setIsOpen((prev) => !prev);
   const closeDropdown = () => setIsOpen(false);
 
-  // Fetch user data from localStorage (fallback)
   useEffect(() => {
     const userData = localStorage.getItem("user");
 
@@ -46,12 +46,10 @@ export default function UserDropdown() {
     }
   }, [dispatch]);
 
-  // Handle profile image upload
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file || !user?.id) return;
 
-    // Temp preview
     const tempUrl = URL.createObjectURL(file);
     setFormData({ avatarUrl: tempUrl });
 

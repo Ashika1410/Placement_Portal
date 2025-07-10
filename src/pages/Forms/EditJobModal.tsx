@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import Input from "../../components/form/input/InputField";
-import TextAreaInput from "../../components/form/form-elements/TextAreaInput";
 import Button from "../../components/ui/button/Button";
 
 interface Job {
@@ -101,7 +100,7 @@ export default function EditJobModal({
             placeholder="Location"
             className="w-full border px-4 py-2 rounded"
           />
-          <TextAreaInput
+          <textarea
             name="description"
             value={formData.description}
             onChange={handleChange}
