@@ -80,11 +80,11 @@ export default function UserInfoCard() {
   return (
     <div className="rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-900">
       <div className="flex items-center justify-between mb-3">
-        <h4 className="text-base font-semibold text-gray-700 dark:text-white">
+        <h1 className="text-xl font-bold text-gray-700 dark:text-white">
           {user?.role} INFORMATION
-        </h4>
+        </h1>
         <button
-          className="text-sm text-blue-500 hover:underline"
+          className="text-xl text-blue-500 hover:underline"
           onClick={() => setEditMode(!editMode)}
         >
           {editMode ? "Cancel" : "Edit"}
@@ -93,7 +93,7 @@ export default function UserInfoCard() {
 
       <div className="space-y-2 text-gray-600 dark:text-gray-300 p-4">
         {editMode ? (
-          <div className="space-y-4 text-gray-700 dark:text-gray-300 p-4">
+          <div className="space-y-4 text-gray-700 dark:text-gray-300 p-4 text-xl">
             {[
               { label: "Email", name: "email", type: "text" },
               { label: "Phone", name: "phone", type: "text", value: formData?.phone || formData?.phoneno || "" },
@@ -106,7 +106,7 @@ export default function UserInfoCard() {
               { label: "Resume URL", name: "resumeUrl", type: "text" },
             ].map(({ label, name, type, value }) => (
               <div key={name} className="flex flex-col gap-1">
-                <label htmlFor={name} className="text-sm font-medium">{label}</label>
+                <label htmlFor={name} className="text-xl font-medium">{label}</label>
                 <input
                   id={name}
                   name={name}
@@ -123,7 +123,7 @@ export default function UserInfoCard() {
               { label: "Skills", name: "skills" },
             ].map(({ label, name }) => (
               <div key={name} className="flex flex-col gap-1">
-                <label htmlFor={name} className="text-sm font-medium">{label}</label>
+                <label htmlFor={name} className="text-xl font-medium">{label}</label>
                 <textarea
                   id={name}
                   name={name}
@@ -146,21 +146,23 @@ export default function UserInfoCard() {
           </div>
         ) : (
           <>
-            <p><strong>Email:</strong> {user?.email}</p>
-            <p><strong>Phone:</strong> {user?.phone || user?.phoneno}</p>
-            {user?.department && <p><strong>Department:</strong> {user.department}</p>}
-            {user?.linkedin && <p><strong>LinkedIn:</strong> {user.linkedin}</p>}
-            {user?.github && <p><strong>GitHub:</strong> {user.github}</p>}
-            {user?.website && <p><strong>Website:</strong> {user.website}</p>}
-            {user?.cgpa && <p><strong>CGPA:</strong> {user.cgpa}</p>}
-            {user?.backlogs && <p><strong>Backlogs:</strong> {user.backlogs}</p>}
-            {user?.address && <p><strong>Address:</strong> {user.address}</p>}
-            {user?.resumeUrl && (
-              <p>
-                <strong>Resume:</strong> <a href={user.resumeUrl} target="_blank" rel="noopener noreferrer" className="text-blue-500 underline">View</a>
-              </p>
-            )}
-            {user?.skills && <p><strong>Skills:</strong> {user.skills}</p>}
+            <div className="text-xl">
+              <p><strong>Email:</strong> {user?.email}</p>
+              <p><strong>Phone:</strong> {user?.phone || user?.phoneno}</p>
+              {user?.department && <p><strong>Department:</strong> {user.department}</p>}
+              {user?.linkedin && <p><strong>LinkedIn:</strong> {user.linkedin}</p>}
+              {user?.github && <p><strong>GitHub:</strong> {user.github}</p>}
+              {user?.website && <p><strong>Website:</strong> {user.website}</p>}
+              {user?.cgpa && <p><strong>CGPA:</strong> {user.cgpa}</p>}
+              {user?.backlogs && <p><strong>Backlogs:</strong> {user.backlogs}</p>}
+              {user?.address && <p><strong>Address:</strong> {user.address}</p>}
+              {user?.resumeUrl && (
+                <p>
+                  <strong>Resume:</strong> <a href={user.resumeUrl} target="_blank" rel="noopener noreferrer" className="text-blue-500 underline">View</a>
+                </p>
+              )}
+              {user?.skills && <p><strong>Skills:</strong> {user.skills}</p>}
+            </div>
           </>
         )}
       </div>

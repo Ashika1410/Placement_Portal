@@ -1,170 +1,137 @@
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHeader,
-  TableRow,
-} from "../../ui/table";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
-import Badge from "../../ui/badge/Badge";
-
-interface Placement {
+interface Student {
   id: number;
-  student: {
-    image: string;
-    name: string;
-    department: string;
-  };
-  company: string;
-  role: string;
-  package: string;
+  name: string;
+  email: string;
+  phone: string;
+  registerNumber: string;
+  department: string;
+  batch: string;
+  year?: string;
+  resumeUrl?: string;
+  cgpa?: string;
+  skills?: string;
   status: string;
+  user: {
+    avatarUrl?: string;
+  }
 }
 
-const placementData: Placement[] = [
-  {
-    id: 1,
-    student: {
-      image: "/images/student/student-1.jpg",
-      name: "Aarav Sharma",
-      department: "Computer Science",
-    },
-    company: "Google",
-    role: "Software Engineer",
-    package: "18 LPA",
-    status: "Placed",
-  },
-  {
-    id: 2,
-    student: {
-      image: "/images/student/student-2.jpg",
-      name: "Neha Verma",
-      department: "Electronics",
-    },
-    company: "TCS",
-    role: "Systems Engineer",
-    package: "3.6 LPA",
-    status: "Placed",
-  },
-  {
-    id: 3,
-    student: {
-      image: "/images/student/student-3.jpg",
-      name: "Rohan Mehta",
-      department: "Mechanical",
-    },
-    company: "Infosys",
-    role: "Analyst",
-    package: "4.2 LPA",
-    status: "Pending",
-  },
-  {
-    id: 4,
-    student: {
-      image: "/images/student/student-4.jpg",
-      name: "Sara Ali",
-      department: "Information Technology",
-    },
-    company: "Wipro",
-    role: "Project Engineer",
-    package: "3.5 LPA",
-    status: "Placed",
-  },
-  {
-    id: 5,
-    student: {
-      image: "/images/student/student-5.jpg",
-      name: "Vikram Singh",
-      department: "Civil",
-    },
-    company: "-",
-    role: "-",
-    package: "-",
-    status: "Not Placed",
-  },
-];
 
 export default function StudentTable() {
+  const [students, setStudents] = useState<Student[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchStudents = async () => {
+      try {
+        const res = await axios.get(`http://localhost:3000/student`);
+        setStudents(res.data);
+      } catch (err) {
+        console.error("Failed to load companies", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchStudents();
+  }, []);
+
+  const renderStudentRows = () => {
+    const rows = [];
+
+    for (let i = 0; i < students.length; i++) {
+      const student = students[i];
+      rows.push(
+        <tr key={student.id}>
+          <td className="px-4 py-3">
+            <div className="flex items-center gap-3">
+              <img
+                src={student.user?.avatarUrl || "/images/user/profile4.jfif"}
+                alt={student.name || "unknown"}
+                className="rounded-full w-10 h-10 object-cover"
+              />
+            </div>
+          </td>
+          <td className="px-4 py-3">
+            <span className="font-medium text-gray-800 dark:text-white/90">
+              {student.name || "Unknown"}
+            </span>
+          </td>
+          <td className="px-4 py-3">{student.email || "N/A"}</td>
+          <td className="px-4 py-3">{student.phone || "N/A"}</td>
+          <td className="px-4 py-3">{student.registerNumber || "N/A"}</td>
+          <td className="px-4 py-3">{student.department || "N/A"}</td>
+          <td className="px-4 py-3">{student.batch || "N/A"}</td>
+          <td className="px-4 py-3">{student.year || "N/A"}</td>
+          <td className="px-4 py-3">
+            {student.resumeUrl ? (
+              <a
+                href={student.resumeUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-600 underline dark:text-blue-400"
+              >
+                {student.resumeUrl}
+              </a>
+            ) : (
+              <span className="text-gray-400 italic">N/A</span>
+            )}
+          </td>
+          <td className="px-4 py-3">{student.cgpa || "N/A"}</td>
+          <td className="px-4 py-3">{student.skills || "N/A"}</td>
+          <td className="px-4 py-3">
+            {student.status ? (
+              <span
+                className={`px-2 py-1 rounded-full text-xs font-medium ${student.status.toLowerCase() === "placed"
+                    ? "bg-green-100 text-green-700"
+                    : "bg-red-100 text-red-800"
+                  }`}
+              >
+                {student.status}
+              </span>
+            ) : (
+              <span className="text-gray-400 italic">N/A</span>
+            )}
+          </td>
+        </tr>
+      );
+    }
+
+    return rows;
+  };
   return (
     <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
       <div className="max-w-full overflow-x-auto">
-        <Table>
-          <TableHeader className="border-b border-gray-100 dark:border-white/[0.05]">
-            <TableRow>
-              <TableCell isHeader className="px-5 py-3 text-start text-gray-500 text-theme-xs dark:text-gray-400">
-                Student
-              </TableCell>
-              <TableCell isHeader className="px-5 py-3 text-start text-gray-500 text-theme-xs dark:text-gray-400">
-                Department
-              </TableCell>
-              <TableCell isHeader className="px-5 py-3 text-start text-gray-500 text-theme-xs dark:text-gray-400">
-                Company
-              </TableCell>
-              <TableCell isHeader className="px-5 py-3 text-start text-gray-500 text-theme-xs dark:text-gray-400">
-                Role
-              </TableCell>
-              <TableCell isHeader className="px-5 py-3 text-start text-gray-500 text-theme-xs dark:text-gray-400">
-                Package
-              </TableCell>
-              <TableCell isHeader className="px-5 py-3 text-start text-gray-500 text-theme-xs dark:text-gray-400">
-                Status
-              </TableCell>
-            </TableRow>
-          </TableHeader>
-
-          <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
-            {placementData.map((entry) => (
-              <TableRow key={entry.id}>
-                <TableCell className="px-5 py-4 sm:px-6 text-start">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 overflow-hidden rounded-full">
-                      <img
-                        width={40}
-                        height={40}
-                        src={entry.student.image}
-                        alt={entry.student.name}
-                      />
-                    </div>
-                    <div>
-                      <span className="block font-medium text-gray-800 text-theme-sm dark:text-white/90">
-                        {entry.student.name}
-                      </span>
-                      <span className="block text-gray-500 text-theme-xs dark:text-gray-400">
-                        {entry.student.department}
-                      </span>
-                    </div>
-                  </div>
-                </TableCell>
-                <TableCell className="px-4 py-3 text-start text-theme-sm text-gray-500 dark:text-gray-400">
-                  {entry.student.department}
-                </TableCell>
-                <TableCell className="px-4 py-3 text-start text-theme-sm text-gray-500 dark:text-gray-400">
-                  {entry.company}
-                </TableCell>
-                <TableCell className="px-4 py-3 text-start text-theme-sm text-gray-500 dark:text-gray-400">
-                  {entry.role}
-                </TableCell>
-                <TableCell className="px-4 py-3 text-start text-theme-sm text-gray-500 dark:text-gray-400">
-                  {entry.package}
-                </TableCell>
-                <TableCell className="px-4 py-3 text-start text-theme-sm text-gray-500 dark:text-gray-400">
-                  <Badge
-                    size="sm"
-                    color={
-                      entry.status === "Placed"
-                        ? "success"
-                        : entry.status === "Pending"
-                        ? "warning"
-                        : "error"
-                    }
-                  >
-                    {entry.status}
-                  </Badge>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+        {loading ? (
+          <p className="p-4 text-gray-500">Loading...</p>
+        ) : students.length === 0 ? (
+          <p className="p-4 text-red-500">No companies found.</p>
+        ) : (
+          <table className="min-w-full text-sm text-left">
+            <thead className="border-b border-gray-100 dark:border-white/[0.05] bg-gray-50 dark:bg-white/[0.03]">
+              <tr>
+                <th className="px-4 py-3 font-semibold text-gray-700 dark:text-white/80">Profile</th>
+                <th className="px-4 py-3 font-semibold text-gray-700 dark:text-white/80">Student Name</th>
+                <th className="px-4 py-3 font-semibold text-gray-700 dark:text-white/80">Email ID</th>
+                <th className="px-4 py-3 font-semibold text-gray-700 dark:text-white/80">Mobile Number</th>
+                <th className="px-4 py-3 font-semibold text-gray-700 dark:text-white/80">Register Number</th>
+                <th className="px-4 py-3 font-semibold text-gray-700 dark:text-white/80">Department</th>
+                <th className="px-4 py-3 font-semibold text-gray-700 dark:text-white/80">Batch</th>
+                <th className="px-4 py-3 font-semibold text-gray-700 dark:text-white/80">Year</th>
+                <th className="px-4 py-3 font-semibold text-gray-700 dark:text-white/80">Resume URL</th>
+                <th className="px-4 py-3 font-semibold text-gray-700 dark:text-white/80">CGPA</th>
+                <th className="px-4 py-3 font-semibold text-gray-700 dark:text-white/80">Skills</th>
+                <th className="px-4 py-3 font-semibold text-gray-700 dark:text-white/80">Status</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
+              {renderStudentRows()}
+            </tbody>
+          </table>
+        )}
       </div>
     </div>
   );

@@ -20,21 +20,34 @@ import CompanyListPage from "./pages/Tables/CompanyList";
 import StaffListPage from "./pages/Tables/StaffList";
 import StudentListPage from "./pages/Tables/StudentList";
 import JobsPage from "./pages/OtherPage/JobsPage";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { loadUserFromStorage } from "./reduxStore/authSlice";
 import ProfilePage from "./pages/ProfilePages/UserProfile";
-import UserMetaCard from "./components/UserProfile/UserMetaCard";
 import UserInfoCard from "./components/UserProfile/UserInfoCard";
+import { loadUserFromStorage } from "./reduxStore/authSlice";
+import { RootState } from "./reduxStore/store";
 
 export default function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(loadUserFromStorage());
-  }, [dispatch]);
+  }, []);
+
+  const user = useSelector((state: RootState) => state.auth.user);
+  const token = useSelector((state: RootState) => state.auth.token);
+
+  useEffect(() => {
+    if (user && token) {
+      localStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem("token", token);
+    }
+  }, [user, token]);
+
+
   return (
     <>
+    <div className="bg-no-repeat bg-cover bg-center" style={{backgroundImage: `url(https://i.pinimg.com/736x/6d/fc/b8/6dfcb86a420b4c489a87c8a7d80faca9.jpg)`}}>
       <Router>
         <ScrollToTop />
         <Routes>
@@ -43,7 +56,7 @@ export default function App() {
             <Route index path="/" element={<Home />} />
 
             {/* Others Page */}
-            <Route path="/profile/:id" element={<ProfilePage/>} />
+            <Route path="/profile/:id" element={<ProfilePage />} />
             <Route path="/job/:id" element={<JobDescriptionPage />} />
             <Route path="/job-page" element={<JobsPage />} />
             <Route path="/report" element={<ReportPage />} />
@@ -55,8 +68,7 @@ export default function App() {
             <Route path="/company-apply" element={<CompanyApplications />} />
             <Route path="/application-tracker" element={<ApplicationTracker />} />
             <Route path="/resume-upload" element={<ResumeUpload />} />
-            <Route path="/usermeta" element={<UserMetaCard/>} />
-            <Route path="/userinfo" element={<UserInfoCard/>} />
+            <Route path="/userinfo" element={<UserInfoCard />} />
 
             {/* Tables */}
             <Route path="/staff-list" element={<StaffListPage />} />
@@ -74,6 +86,7 @@ export default function App() {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
+      </div>
     </>
   );
 }

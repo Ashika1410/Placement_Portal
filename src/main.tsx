@@ -10,19 +10,20 @@ import { ThemeProvider } from "./context/ThemeContext.tsx";
 // import { AuthProvider } from "./context/AuthContext.tsx";
 // import ReactDOM from "react-dom/client";
 import React from "react";
-import { store } from "./reduxStore/store.ts";
+import { persistor, store } from "./reduxStore/store.ts";
+import { PersistGate } from "redux-persist/lib/integration/react";
 
 createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <Provider store={store}>
       {/* <StrictMode> */}
-        <ThemeProvider>
-          <AppWrapper>
-            {/* <AuthProvider> */}
-              <App />
-            {/* </AuthProvider> */}
-          </AppWrapper>
-        </ThemeProvider>
+      <ThemeProvider>
+        <AppWrapper>
+          <PersistGate loading={null} persistor={persistor}>
+            <App />
+          </PersistGate>
+        </AppWrapper>
+      </ThemeProvider>
       {/* </StrictMode> */}
     </Provider>
   </React.StrictMode>,
