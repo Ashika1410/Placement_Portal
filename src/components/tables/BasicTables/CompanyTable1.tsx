@@ -1,156 +1,114 @@
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHeader,
-    TableRow,
-} from "../../ui/table";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 interface Company {
     id: number;
-    companyName: {
-        image: string;
-        name: string;
-    };
-    url: string;
-    position: {
-        name: string[];
-    };
-    vaccency: number;
-    networth: string;
+    name: string;
+    email: string;
+    phone: string;
+    website?: string;
+    address?: string;
+    industry?: string;
+    description?: string;
+    user: {
+        avatarUrl?: string;
+    }
 }
 
-const tableData: Company[] = [
-    {
-        id: 1,
-        companyName: {
-            image: "/images/company/google.png",
-            name: "Google LLC",
-        },
-        url: "https://careers.google.com",
-        position: {
-            name: ["Frontend Developer", "Backend Engineer", "Cloud Architect"],
-        },
-        vaccency: 12,
-        networth: "$1.7T",
-    },
-    {
-        id: 2,
-        companyName: {
-            image: "/images/company/microsoft.png",
-            name: "Microsoft",
-        },
-        url: "https://careers.microsoft.com",
-        position: {
-            name: ["Software Engineer", "Data Scientist"],
-        },
-        vaccency: 8,
-        networth: "$2.5T",
-    },
-    {
-        id: 3,
-        companyName: {
-            image: "/images/company/amazon.png",
-            name: "Amazon",
-        },
-        url: "https://www.amazon.jobs",
-        position: {
-            name: ["DevOps Engineer"],
-        },
-        vaccency: 5,
-        networth: "$1.8T",
-    },
-    {
-        id: 4,
-        companyName: {
-            image: "/images/company/meta.png",
-            name: "Meta Platforms",
-        },
-        url: "https://www.metacareers.com",
-        position: {
-            name: ["AI Researcher", "UX Designer"],
-        },
-        vaccency: 6,
-        networth: "$900B",
-    },
-    {
-        id: 5,
-        companyName: {
-            image: "/images/company/infosys.png",
-            name: "Infosys",
-        },
-        url: "https://www.infosys.com/careers",
-        position: {
-            name: ["Full Stack Developer", "Business Analyst", "QA Tester"],
-        },
-        vaccency: 15,
-        networth: "$85B",
-    },
-];
-
 export default function CompanyTable() {
+    const [companies, setCompanies] = useState<Company[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchCompanies = async () => {
+            try {
+                const res = await axios.get(`http://localhost:3000/company`);
+                setCompanies(res.data);
+            } catch (err) {
+                console.error("Failed to load companies", err);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchCompanies();
+    }, []);
+
+    const renderCompanyRows = () => {
+        const rows = [];
+
+        for (let i = 0; i < companies.length; i++) {
+            const company = companies[i];
+            rows.push(
+                <tr key={company.id}>
+                    <td className="px-4 py-3">
+                        <div className="flex items-center gap-3">
+                            <img
+                                src={company.user?.avatarUrl || "/images/user/profile4.jfif"}
+                                alt={company.name || "unknown"}
+                                className="rounded-full w-10 h-10 object-cover"
+                            />
+                        </div>
+                    </td>
+                    <td className="px-4 py-3">
+                        <span className="font-medium text-gray-800 dark:text-white/90">
+                            {company.name || "Unknown"}
+                        </span>
+                    </td>
+                    <td className="px-4 py-3">{company.email || "N/A"}</td>
+                    <td className="px-4 py-3">{company.phone || "N/A"}</td>
+                    <td className="px-4 py-3">
+                        {company.website ? (
+                            <a
+                                href={company.website}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-blue-600 underline dark:text-blue-400"
+                            >
+                                {company.website}
+                            </a>
+                        ) : (
+                            <span className="text-gray-400 italic">N/A</span>
+                        )}
+                    </td>
+                    <td className="px-4 py-3">{company.address || "N/A"}</td>
+                    <td className="px-4 py-3">{company.industry || "N/A"}</td>
+                    <td className="px-4 py-3">{company.description || "N/A"}</td>
+                </tr>
+            );
+        }
+
+        return rows;
+    };
+
     return (
         <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
             <div className="max-w-full overflow-x-auto">
-                <Table>
-                    <TableHeader className="border-b border-gray-100 dark:border-white/[0.05]">
-                        <TableRow>
-                            <TableCell isHeader className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400">
-                                Company Name
-                            </TableCell>
-                            <TableCell isHeader className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400">
-                                Website URL
-                            </TableCell>
-                            <TableCell isHeader className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400">
-                                Positions
-                            </TableCell>
-                            <TableCell isHeader className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400">
-                                Vacancy
-                            </TableCell>
-                            <TableCell isHeader className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400">
-                                Net Worth
-                            </TableCell>
-                        </TableRow>
-                    </TableHeader>
-                    <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
-                        {tableData.map((company) => (
-                            <TableRow key={company.id}>
-                                <TableCell className="px-5 py-4 sm:px-6 text-start">
-                                    <div className="flex items-center gap-3">
-                                        <div className="w-10 h-10 overflow-hidden rounded-full">
-                                            <img
-                                                width={40}
-                                                height={40}
-                                                src={company.companyName.image}
-                                                alt={company.companyName.name}
-                                            />
-                                        </div>
-                                        <div>
-                                            <span className="block font-medium text-gray-800 text-theme-sm dark:text-white/90">
-                                                {company.companyName.name}
-                                            </span>
-                                        </div>
-                                    </div>
-                                </TableCell>
-                                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                    <a href={company.url} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline dark:text-blue-400">
-                                        {company.url}
-                                    </a>
-                                </TableCell>
-                                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                    {company.position.name.join(", ")}
-                                </TableCell>
-                                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                    {company.vaccency}
-                                </TableCell>
-                                <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
-                                    {company.networth}
-                                </TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
+                {loading ? (
+                    <p className="p-4 text-gray-500">Loading...</p>
+                ) : companies.length === 0 ? (
+                    <p className="p-4 text-red-500">No companies found.</p>
+                ) : (
+                    <table className="min-w-full text-sm text-left">
+                        <thead className="border-b border-gray-100 dark:border-white/[0.05] bg-gray-50 dark:bg-white/[0.03]">
+                            <tr>
+                                <th className="px-4 py-3 font-semibold text-gray-700 dark:text-white/80">Profile</th>
+                                <th className="px-4 py-3 font-semibold text-gray-700 dark:text-white/80">Company Name</th>
+                                <th className="px-4 py-3 font-semibold text-gray-700 dark:text-white/80">Email ID</th>
+                                <th className="px-4 py-3 font-semibold text-gray-700 dark:text-white/80">Contact Phone</th>
+                                <th className="px-4 py-3 font-semibold text-gray-700 dark:text-white/80">Website</th>
+                                <th className="px-4 py-3 font-semibold text-gray-700 dark:text-white/80">Address</th>
+                                <th className="px-4 py-3 font-semibold text-gray-700 dark:text-white/80">Industry</th>
+                                <th className="px-4 py-3 font-semibold text-gray-700 dark:text-white/80">Description</th>
+                            </tr>
+                        </thead>
+                        <tbody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
+                            {renderCompanyRows()}
+                        </tbody>
+                    </table>
+                )}
             </div>
         </div>
     );
 }
+

@@ -45,10 +45,10 @@ export default function UserPrivilegesCard() {
 
   return (
     <div className="rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-900">
-      <h4 className="mb-3 text-base font-semibold text-gray-700 dark:text-white">
+      <h4 className="mb-3 text-xl font-semibold text-gray-700 dark:text-white">
         {user?.role} PRIVILEGES
       </h4>
-      <ul className="list-disc ml-6 space-y-1 text-gray-700 dark:text-gray-300">
+      <ul className="list-disc ml-6 space-y-1 text-xl text-gray-700 dark:text-gray-300">
         {user?.role === "ADMIN" && (
           <>
             <li>Full access to all resources</li>

@@ -62,18 +62,24 @@ export default function StatisticsChart() {
     xaxis: {
       type: "category", // Category-based x-axis
       categories: [
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
-        "Nov",
-        "Dec",
+        "2008",
+        "2009",
+        "2010",
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025",
       ],
       axisBorder: {
         show: false, // Hide x-axis border
@@ -103,12 +109,12 @@ export default function StatisticsChart() {
 
   const series = [
     {
-      name: "Sales",
-      data: [180, 190, 170, 160, 175, 165, 170, 205, 230, 210, 240, 235],
+      name: "Students",
+      data: [180, 190, 170, 160, 175, 165, 170, 205, 230, 210, 240, 235, 160, 175, 210, 235, 255, 230],
     },
     {
-      name: "Revenue",
-      data: [40, 30, 50, 40, 55, 40, 70, 100, 110, 120, 150, 140],
+      name: "Placements",
+      data: [40, 30, 50, 40, 55, 40, 70, 100, 110, 120, 150, 140, 75, 65, 100, 50, 85, 20],
     },
   ];
   return (
@@ -119,11 +125,8 @@ export default function StatisticsChart() {
             Statistics
           </h3>
           <p className="mt-1 text-gray-500 text-theme-sm dark:text-gray-400">
-            Target you’ve set for each month
+            Placements For each Years
           </p>
-        </div>
-        <div className="flex items-start w-full gap-3 sm:justify-end">
-          {/* <ChartTab /> */}
         </div>
       </div>
 

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ChevronDownIcon, HorizontalDotsIcon } from "../assets/icons";
 import { useSidebar } from "../context/SidebarContext";
 import { BookUp2, Building2, ClipboardMinus, Dock, FileUser, NotepadText, Projector, Settings, ShieldCheck, User, UserPen, UserPlus, Users } from "lucide-react";
@@ -16,7 +16,7 @@ interface NavItem {
   new?: boolean;
 }
 interface UserSidebarProps {
-  role: string;
+  role: "admin" | "student" | "staff" | "company";
 }
 
 const roleBasedMenus: Record<"ADMIN" | "STAFF" | "STUDENT" | "COMPANY", NavItem[]> = {
@@ -32,7 +32,7 @@ const roleBasedMenus: Record<"ADMIN" | "STAFF" | "STUDENT" | "COMPANY", NavItem[
         { name: "Company", icon: <Building2 />, path: "/company-list" },
         { name: "Jobs", icon: <NotepadText />, path: "/job-page" },
         { name: "Report", icon: <ClipboardMinus />, path: "/report" },
-        { name: "Settings", icon: <Settings />, path: '/profile/:id'},
+        { name: "Settings", icon: <Settings />, path: '/profile/:id' },
       ],
     },
   ],
@@ -45,14 +45,14 @@ const roleBasedMenus: Record<"ADMIN" | "STAFF" | "STUDENT" | "COMPANY", NavItem[
         { name: "Profile", icon: <UserPen />, path: "/profile/:id" },
         { name: "Students", icon: <Users />, path: "/student-list" },
         { name: "Jobs", icon: <NotepadText />, path: "/job-page" },
-        { name: "Settings", icon: <Settings />, path: '/profile/:id'},
+        { name: "Settings", icon: <Settings />, path: '/profile/:id' },
       ],
     },
   ],
   STUDENT: [
     {
       name: "STUDENT",
-      icon: <Users /> ,
+      icon: <Users />,
       path: "/student-dashboard",
       subItems: [
         { name: "Profile", icon: <UserPen />, path: "/profile/:id" },
@@ -61,7 +61,7 @@ const roleBasedMenus: Record<"ADMIN" | "STAFF" | "STUDENT" | "COMPANY", NavItem[
         { name: "Resumes", icon: <FileUser />, path: "/resume" },
         { name: "Jobs", icon: <NotepadText />, path: "/job-page" },
         { name: "Application", icon: <Dock />, path: "/application" },
-        { name: "Settings", icon: <Settings />, path: '/profile/:id'},
+        { name: "Settings", icon: <Settings />, path: '/profile/:id' },
       ],
     },
   ],
@@ -75,7 +75,7 @@ const roleBasedMenus: Record<"ADMIN" | "STAFF" | "STUDENT" | "COMPANY", NavItem[
         { name: "Jobs", icon: <NotepadText />, path: "/job-page" },
         { name: "Application", icon: <Dock />, path: "/company-apply" },
         { name: "PostJobs", icon: <BookUp2 />, path: "/jobpost" },
-        { name: "Settings", icon: <Settings />, path: '/profile/:id'},
+        { name: "Settings", icon: <Settings />, path: '/profile/:id' },
       ],
     },
   ],
@@ -87,42 +87,46 @@ const AppSidebar: React.FC = () => {
   const reduxUser = useSelector((state: RootState) => state.auth.user);
   const id = reduxUser?.id || localStorage.getItem("userId");
   const role = reduxUser?.role || localStorage.getItem("role");
-  // const userRole = Cookies.get("role");
   const isSuperUser = role === "ADMIN";
+  const navigate = useNavigate();
+
   const [user, setUser] = useState<UserSidebarProps | null>(null);
   const [openSubmenu, setOpenSubmenu] = useState<{ type: "main"; index: number } | null>(null);
   const [subMenuHeight, setSubMenuHeight] = useState<Record<string, number>>({});
   const subMenuRefs = useRef<Record<string, HTMLDivElement | null>>({});
-
   const isActive = useCallback(
     (path: string) => location.pathname === path,
     [location.pathname]
   );
 
-  useEffect(() => {
+ useEffect(() => {
     const fetchAndSetUser = async () => {
+      const userId = reduxUser?.id;
+
+      if (!userId) {
+        console.warn("User ID is missing. Redirecting to signin.");
+        navigate("/signin");
+        return;
+      }
+
       try {
-        const res = await axios.get(`http://localhost:3000/user/${id}`);
+        const res = await axios.get(`http://localhost:3000/user/${userId}`);
         setUser(res.data);
       } catch (err) {
         console.error("Failed to fetch user info:", err);
-        // setError("Failed to fetch user info.");
       }
     };
 
     fetchAndSetUser();
-  }, [id, role]);
+  }, [reduxUser, navigate]);
 
   useEffect(() => {
     if (!user?.role) return;
-
     let matched = false;
-    const menus = isSuperUser
-      ? Object.values(roleBasedMenus).flat()
-      : roleBasedMenus[user.role] || [];
+    const menus = isSuperUser ? Object.values(roleBasedMenus).flat() : roleBasedMenus[user.role] || [user.role];
 
-    menus.forEach((item, index) => {
-      item.subItems?.forEach((subItem) => {
+    menus.forEach((item: { subItems: { path: string; }[]; }, index: any) => {
+      item.subItems?.forEach((subItem: { path: string; }) => {
         if (subItem.path && isActive(subItem.path)) {
           setOpenSubmenu({ type: "main", index });
           matched = true;
@@ -268,21 +272,22 @@ const AppSidebar: React.FC = () => {
     </ul>
   );
 
-const menusToRender = useMemo(() => {
-  if (isSuperUser) {
-    return Object.values(roleBasedMenus).flat();
-  }
+  const menusToRender = useMemo(() => {
+    if (isSuperUser) {
+      return Object.values(roleBasedMenus).flat();
+    }
 
-  if (user?.role && user.role in roleBasedMenus) {
-    return roleBasedMenus[user.role as keyof typeof roleBasedMenus];
-  }
+    if (user?.role && user.role in roleBasedMenus) {
+      return roleBasedMenus[user.role as keyof typeof roleBasedMenus];
+    }
 
-  return [];
-}, [isSuperUser, user?.role]);
+    return [];
+  }, [isSuperUser, user?.role]);
 
   return (
+    <div className="bg-no-repeat bg-cover bg-center" style={{backgroundImage: `url(https://i.pinimg.com/736x/6d/fc/b8/6dfcb86a420b4c489a87c8a7d80faca9.jpg)`}}>
     <aside
-      className={`fixed mt-16 flex flex-col lg:mt-0 top-0 px-5 left-0 bg-white dark:bg-gray-900 dark:border-gray-800 text-gray-900 h-screen transition-all duration-300 ease-in-out z-50 border-r border-gray-200 
+      className={`fixed mt-16 flex flex-col lg:mt-0 top-0 px-5 left-0 dark:bg-gray-100 dark:border-gray-800 text-gray-900 h-screen transition-all duration-300 ease-in-out z-50 border-r border-gray-200 
       ${isExpanded || isMobileOpen ? "w-[290px]" : isHovered ? "w-[290px]" : "w-[90px]"}
       ${isMobileOpen ? "translate-x-0" : "-translate-x-full"}
       lg:translate-x-0`}
@@ -339,6 +344,7 @@ const menusToRender = useMemo(() => {
         </nav>
       </div>
     </aside>
+    </div>
   );
 };
 

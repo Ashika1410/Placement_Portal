@@ -9,9 +9,8 @@ import Checkbox from "../form/input/Checkbox";
 import { useEffect, useState } from "react";
 import { FaLinkedinIn } from "react-icons/fa";
 import { useDispatch } from "react-redux";
-import { AppDispatch } from "../../reduxStore/store"; // adjust this path as needed
+import { AppDispatch } from "../../reduxStore/store"; 
 import { login } from "../../reduxStore/authSlice";
-// import { login as loginRedux } from "../../reduxStore/authSlice";
 
 type FormData = {
   email: string;
@@ -28,7 +27,7 @@ export default function SignInForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
   const navigate = useNavigate();
-  const dispatch = useDispatch<AppDispatch>(); // 👈 Redux dispatch
+  const dispatch = useDispatch<AppDispatch>();
 
   const onSubmit = async (data: FormData) => {
     try {
@@ -40,7 +39,6 @@ export default function SignInForm() {
       console.log("Response:", response);
 
       const resData = await response.json();
-      // console.log("resData:", resData);
 
       if (!response.ok) throw new Error(resData.message || "Login failed");
 
@@ -52,15 +50,12 @@ export default function SignInForm() {
       if (response.ok && resData.userData && resData.token) {
         dispatch(
           login({
-            user: resData.userData, // Must match your User interface
+            user: resData.userData, 
             token: resData.token,
           })
         );
-        // console.log("User Response:",resData.userData);
       }
-
-      // dispatch(loginRedux({ user: user, token: resData.token })); // ✅ dispatch login
-
+      dispatch(login({ user: resData.userData, token: resData.token }));
       navigate("/");
     } catch (error) {
       console.error("Login error:", (error as Error).message);
@@ -148,7 +143,7 @@ export default function SignInForm() {
               <div className="relative">
                 <Input
                   type={showPassword ? "text" : "password"}
-                  placeholder="password"
+                  placeholder="password" autoComplete="password"
                   {...register("password", { required: "Password is required" })}
                   error={!!errors.password}
                   hint={errors.password?.message}
