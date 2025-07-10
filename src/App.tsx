@@ -47,7 +47,7 @@ export default function App() {
 
   return (
     <>
-    <div className="bg-no-repeat bg-cover bg-center" style={{backgroundImage: `url(https://i.pinimg.com/736x/6d/fc/b8/6dfcb86a420b4c489a87c8a7d80faca9.jpg)`}}>
+    <section className="bg-no-repeat bg-cover bg-center" style={{backgroundImage: `url(https://i.pinimg.com/736x/6d/fc/b8/6dfcb86a420b4c489a87c8a7d80faca9.jpg)`}}>
       <Router>
         <ScrollToTop />
         <Routes>
@@ -86,7 +86,7 @@ export default function App() {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
-      </div>
+      </section>
     </>
   );
 }
